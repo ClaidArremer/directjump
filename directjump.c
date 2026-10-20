@@ -98,7 +98,7 @@ const struct core_projdata dj_projdata = {
  * The interrupt, two ticks into a master step, while playing. next: the
  * source's next pattern; song: nonzero when song mode is about to change the
  * source; rec: the 24-byte entry it peeked (+4 its id, +10 and +12 words, +16,
- * +20 a stop flag). Returns 1 when it armed the change: the stock end-of-pattern
+ * +20 a flag: 1 stops the sequencer at the switch, as the stock tests it). Returns 1 when it armed the change: the stock end-of-pattern
  * test is then skipped (djsites.s). */
 static volatile u8 dj_jumped;
 
@@ -113,8 +113,8 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
         return 0;                       /* song mode: the stock */
     if (S32(CHAIN_INDEX) >= 0)
         return 0;                       /* a chain playing on: the stock */
-    if (R32(SQ_ARMED) || rec[20])
-        return 0;                       /* already armed, or a stop */
+    if (R32(SQ_ARMED) || rec[20] == 1)
+        return 0;                       /* already armed, or a stop (1; a pick from the keys is 0xff) */
 
     start = R16(SQ_MSTEP);              /* the step the boundary plays */
     len = R16(next + PAT_LEN);

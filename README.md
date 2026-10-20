@@ -20,16 +20,16 @@ By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
 
 ## Install
 
-Add `elemods/directjump-1.0-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
+Add `elemods/directjump-1.1-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
 firmware to the Digitone. From the command line:
 
 ```
 python -m elekloader.patch --stock Digitone_and_Digitone_Keys_OS1.44.syx \
-  --mod core-4.1.1-os1.44.elemod --mod directjump-1.0-os1.44.elemod --out Digitone_directjump.syx
+  --mod core-4.1.1-os1.44.elemod --mod directjump-1.1-os1.44.elemod --out Digitone_directjump.syx
 ```
 
 It combines with DIGISNAKE, PUMP and the rest: checked linked with core-dn1 4.1.1, seq-events 0.1,
-DIGISNAKE 1.0, PUMP 2.9 and LØST LVLS 1.0.
+DIGISNAKE 1.0, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1.
 
 **Use core-dn1 4.1.1** whenever the build has two or more mod rows in SETTINGS (DIRECT JUMP and PUMP ANIMATION,
 say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of them can stall a *first* boot
