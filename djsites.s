@@ -1,8 +1,8 @@
 | SPDX-License-Identifier: GPL-2.0-or-later
 | DIRECT JUMP (Digitone mk1, OS 1.44): the sequencer's two sites and the
-| SETTINGS row. ColdFire V4; addresses from mod.json's defsym.
+| SETTINGS rows. ColdFire V4; addresses from mod.json's defsym.
 |
-| The row's four callbacks follow the SETTINGS menu's MenuItem conventions as
+| Each row's four callbacks follow the SETTINGS menu's MenuItem conventions as
 | digihealth's SYSTEM INFO row does (irpina/digihealth, sysinfo.s,
 | GPL-2.0-or-later), from which they are adapted, as PUMP's row is.
 
@@ -54,22 +54,28 @@ dj_site_switch:
         move.w  %d4, SQ_PENDING         | the instruction this replaced
         rts
 
-| ---- SETTINGS > DIRECT JUMP: a checkbox ---------------------------------------
-| ev_settings handler: the row, after the stock ones (and other mods')
+| ---- SETTINGS > DIRECT JUMP and RESTART PATTERN: checkboxes --------------------
+| ev_settings handler: the rows, after the stock ones (and other mods')
         .globl  dj_settings
 dj_settings:
         pea     dj_row
         move.l  8(%sp), -(%sp)          | the menu
         jsr     core_additem
         addq.l  #8, %sp
+        pea     dj_row2
+        move.l  8(%sp), -(%sp)
+        jsr     core_additem
+        addq.l  #8, %sp
         rts
 
+| One row's callbacks; FLAG is its byte in dj_data, STR its label.
+        .macro  ROW name, flag, str
 | label() -> std::string, returned through a0
-dj_label:
+\name\()_label:
         link    %a6, #-4
         move.l  %d2, -(%sp)
         pea     -1(%a6)
-        pea     dj_str
+        pea     \str
         move.l  %a0, %d2
         move.l  %a0, -(%sp)
         jsr     STR_CTOR
@@ -80,36 +86,36 @@ dj_label:
         rts
 
 | select(payload, item): YES toggles it, then the menu redraws
-dj_select:
+\name\()_select:
         movea.l 4(%sp), %a0
         movea.l (%a0), %a0
         moveq   #0, %d0
-        tst.b   dj_data
+        tst.b   \flag
         seq     %d0
         andi.l  #1, %d0
-        move.b  %d0, dj_data
+        move.b  %d0, \flag
         lea     0x38(%a0), %a0
         move.l  %a0, 4(%sp)
         jmp     INVALIDATE
 
 | change(payload, item, delta): RIGHT ticks it, LEFT unticks it
-dj_change:
+\name\()_change:
         movea.l 4(%sp), %a0
         movea.l (%a0), %a0
         move.l  12(%sp), %d0
         beq.s   1f
         sgt     %d0
         andi.l  #1, %d0
-        move.b  %d0, dj_data
+        move.b  %d0, \flag
         lea     0x38(%a0), %a0
         move.l  %a0, 4(%sp)
         jmp     INVALIDATE
 1:      rts
 
 | draw(payload, item, bmp, x, y): the checkbox, ticked while on
-dj_draw:
+\name\()_draw:
         moveq   #0, %d0
-        tst.b   dj_data
+        tst.b   \flag
         beq.s   1f
         moveq   #0x1c, %d0
 1:      add.l   CHECKBOXES, %d0
@@ -122,8 +128,14 @@ dj_draw:
         move.l  %d1, 16(%sp)
         clr.l   20(%sp)
         jmp     BLIT
+        .endm
+
+        ROW     dj, dj_data, dj_str
+        ROW     dj2, dj_data+1, dj_str2
 
         .balign 4
-dj_row: .long   dj_label, dj_select, dj_draw, dj_change
-dj_str: .asciz  "DIRECT JUMP"
+dj_row:  .long  dj_label, dj_select, dj_draw, dj_change
+dj_row2: .long  dj2_label, dj2_select, dj2_draw, dj2_change
+dj_str:  .asciz "DIRECT JUMP"
+dj_str2: .asciz "RESTART PATTERN"
         .balign 4

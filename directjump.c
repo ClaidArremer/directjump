@@ -4,8 +4,14 @@
  * SETTINGS > DIRECT JUMP, ticked: a pattern picked while the sequencer plays
  * takes over on the next step instead of at the end of the current pattern,
  * and it carries on from the same place in the bar (Elektron's "direct jump").
- * Unticked: the stock behaviour. Saved with the project; on 1.44 a change also
- * asks the OS to refresh its power-up copy, so it survives a power cycle.
+ * Unticked: the stock behaviour.
+ *
+ * SETTINGS > RESTART PATTERN, ticked: pressing the key of the pattern playing
+ * restarts it from its first step, on the next step (whether DIRECT JUMP is
+ * ticked or not). Unticked, the stock: nothing changes.
+ *
+ * Both are saved with the project; on 1.44 a change also asks the OS to
+ * refresh its power-up copy, so they survive a power cycle.
  *
  * How the stock sequencer changes pattern (all in its 24 PPQN tick interrupt,
  * 0x40095538): two ticks into every master step it peeks the next entry of the
@@ -20,8 +26,9 @@
  * picked" is: index -1, and the source's next entry is not the pattern
  * playing. Then this mod arms the change itself (site A), on the next step,
  * with the master counter (wrapped to the new pattern's length) as the start
- * step. A chain playing on, song mode, and a pick of the same pattern are left
- * to the stock.
+ * step. A pick of the pattern playing is a restart: armed the same way, with
+ * step 0 as the start (RESTART PATTERN). A chain playing on and song mode are
+ * left to the stock.
  *
  * The switch's per-track arithmetic assumes the start step 0 (it reads the old
  * pattern's track speeds and never wraps by length), so after a jump this mod
@@ -72,20 +79,24 @@ typedef long s32;
 #define TICKS(i)      (((const s32 *)DJ_TICKS)[(signed char)(i)])   /* 24 PPQN ticks a step */
 #define PC_OUT        ((void (*)(u32))DJ_PC_OUT)    /* the stock arm's call: MIDI program out */
 
-/* ---- the setting ------------------------------------------------------------
- * dj_data[0]: 1 ticked. Saved in the project ("DJMP"). A project saved without
- * it keeps whatever the unit had, so loading an old project or making a new one
- * does not untick it. */
+/* ---- the settings -----------------------------------------------------------
+ * dj_data[0]: DIRECT JUMP, dj_data[1]: RESTART PATTERN, 1 ticked. Saved in the
+ * project ("DJMP"; a project saved by 1.0-1.2 has [1] = 0). A project saved
+ * without them keeps whatever the unit had, so loading an old project or making
+ * a new one does not untick them. */
 u8 dj_data[4];
-static u8 dj_keep;
+static u8 dj_keep[2];
 
 static void dj_loaded(int32_t found)
 {
-    if (found)
-        dj_data[0] &= 1;
-    else
-        dj_data[0] = dj_keep;
-    dj_keep = dj_data[0];
+    int i;
+    for (i = 0; i < 2; i++) {
+        if (found)
+            dj_data[i] &= 1;
+        else
+            dj_data[i] = dj_keep[i];
+        dj_keep[i] = dj_data[i];
+    }
 }
 
 const struct core_projdata dj_projdata = {
@@ -93,7 +104,8 @@ const struct core_projdata dj_projdata = {
     sizeof dj_data, dj_data, dj_loaded
 };
 
-#define dj_on()  (*(volatile u8 *)&dj_data[0] != 0)
+#define dj_on()       (*(volatile u8 *)&dj_data[0] != 0)
+#define dj_restart()  (*(volatile u8 *)&dj_data[1] != 0)
 
 /* ---- site A: the sequencer has peeked the next pattern ----------------------
  * The interrupt, two ticks into a master step, while playing. next: the
@@ -107,8 +119,9 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
 {
     u32 cur = R32(SQ_ACTIVE);
     u32 start, len;
+    int same = next == cur;             /* the playing pattern's key: a restart */
 
-    if (!dj_on() || song || !next || next == cur)
+    if (song || !next || !(same ? dj_restart() : dj_on()))
         return 0;
     if (R32(SQ_SOURCE) != DJ_PATTERN_SOURCE || R32(SQ_SOURCE2) != DJ_PATTERN_SOURCE)
         return 0;                       /* song mode: the stock */
@@ -130,6 +143,8 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
     len = R16(next + PAT_LEN);
     if (len > 1)
         start %= len;
+    if (same)
+        start = 0;                      /* a restart: from its first step */
 
     /* the stock arm (0x40096054), with this start step */
     R32(SQ_NEXT_ID) = *(const u32 *)(rec + 4);
@@ -217,8 +232,9 @@ static void dj_mirror_request(void)
 void dj_tick(void *ctrl)
 {
     (void)ctrl;
-    if (dj_data[0] != dj_keep) {        /* SETTINGS changed it */
-        dj_keep = dj_data[0];
+    if (dj_data[0] != dj_keep[0] || dj_data[1] != dj_keep[1]) {     /* SETTINGS changed one */
+        dj_keep[0] = dj_data[0];
+        dj_keep[1] = dj_data[1];
         dj_save_wait = SAVE_TICKS;
     }
     if (dj_save_wait && --dj_save_wait == 0)

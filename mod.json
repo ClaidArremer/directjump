@@ -1,11 +1,11 @@
 {
  "id": "directjump",
- "version": "1.2",
+ "version": "1.3",
  "title": "directjump",
  "category": "Sequencer",
  "license": "GPL-2.0-or-later",
  "author": "Robbie",
- "description": "Direct Jump for the Digitone mk1: SETTINGS > DIRECT JUMP, ticked, makes a pattern picked while the sequencer plays take over on the next step instead of at the end of the pattern, carrying on from the same place in the bar (each track wrapped to the new pattern's lengths, per-track scale mode included). Unticked, the stock behaviour. Chains play on as stock, song mode is left alone, and picking the pattern already playing changes nothing. The setting is saved with the project and, on OS 1.44, survives a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
+ "description": "Direct Jump for the Digitone mk1: SETTINGS > DIRECT JUMP, ticked, makes a pattern picked while the sequencer plays take over on the next step instead of at the end of the pattern, carrying on from the same place in the bar (each track wrapped to the new pattern's lengths, per-track scale mode included). SETTINGS > RESTART PATTERN, ticked, makes pressing the key of the pattern playing restart it from its first step, on the next step. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. The settings are saved with the project and, on OS 1.44, survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
  "device": "digitone-mk1",
  "os": "1.44",
  "sources": [
@@ -72,6 +72,7 @@
  "resources": {
   "names": [
    "settings:DIRECT JUMP",
+   "settings:RESTART PATTERN",
    "projdata:DJMP"
   ],
   "core": "3.3"

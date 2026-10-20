@@ -5,6 +5,9 @@ mod (id `directjump`). With **SETTINGS > DIRECT JUMP** ticked, a pattern you pic
 over on the **next step**, not at the end of the current pattern, and carries on from the same place in the bar.
 Unticked, the Digitone behaves as stock.
 
+With **SETTINGS > RESTART PATTERN** ticked, pressing the key of the pattern that's playing restarts it from its
+first step, on the next step: tap it to replay the first bar, again and again.
+
 By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
 
 > Unofficial and unsupported. Flashing modified firmware is at your own risk; the stock OS always
@@ -20,16 +23,16 @@ By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
 
 ## Install
 
-Add `elemods/directjump-1.2-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
+Add `elemods/directjump-1.3-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
 firmware to the Digitone. From the command line:
 
 ```
 python -m elekloader.patch --stock Digitone_and_Digitone_Keys_OS1.44.syx \
-  --mod core-4.1.1-os1.44.elemod --mod directjump-1.2-os1.44.elemod --out Digitone_directjump.syx
+  --mod core-4.1.1-os1.44.elemod --mod directjump-1.3-os1.44.elemod --out Digitone_directjump.syx
 ```
 
 It combines with DIGISNAKE, PUMP and the rest: checked linked with core-dn1 4.1.1, seq-events 0.1,
-DIGISNAKE 1.0, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2.
+DIGISNAKE 1.0, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 adds RESTART PATTERN.
 
 **Use core-dn1 4.1.1** whenever the build has two or more mod rows in SETTINGS (DIRECT JUMP and PUMP ANIMATION,
 say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of them can stall a *first* boot
@@ -38,25 +41,31 @@ say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of
 
 ## Using it
 
-**SETTINGS > DIRECT JUMP**: YES (or RIGHT) ticks it, YES (or LEFT) unticks it.
+**SETTINGS > DIRECT JUMP** and **SETTINGS > RESTART PATTERN**: YES (or RIGHT) ticks a row, YES (or LEFT) unticks it.
+They work independently.
 
-Ticked, with the sequencer playing:
+DIRECT JUMP ticked, with the sequencer playing:
 
-- **Pick a pattern** (PATTERN + a trig key, or a program change in): it starts on the next step, at the step where
-  the old pattern was, wrapped to the new pattern's length. Bar 2, step 5 of a 64-step pattern, into a
-  16-step one: the new pattern plays on from its own step 5.
+- **Pick a pattern** (PATTERN + a trig key, or a program change in): it starts on the next step, at the step the
+  old pattern would have played, wrapped to the new pattern's length. Playing step 38 of a 64-step pattern, a
+  jump into a 16-step one plays on from its own step 7, so the beat stays locked to the tempo.
 - **Per-track scale mode**: every track lands where it would be had the new pattern been playing all along,
   in its own speed, wrapped to its own length.
 - **Chains** play on as stock (pattern to pattern at each end). Picking a new pattern or chain while one plays
   jumps to its first pattern.
 - **Song mode** is left as stock.
-- **Picking the pattern already playing** changes nothing (it does not restart it).
 
-The jump lands at most one step and a bit after the press: the sequencer decides two ticks into each step,
+RESTART PATTERN ticked, with the sequencer playing:
+
+- **Press the key of the pattern playing**: it starts again from its first step, on the next step. Each press
+  restarts it again; with no press it loops as normal.
+- Unticked, that press changes nothing until the pattern's end (stock).
+
+Either lands at most one step and a bit after the press: the sequencer decides two ticks into each step,
 for the step after it.
 
-The setting is saved with the project, and on OS 1.44 it survives a power cycle. Loading a project saved
-without it, or making a new one, keeps whatever the unit had.
+The settings are saved with the project, and on OS 1.44 they survive a power cycle. Loading a project saved
+without them, or making a new one, keeps whatever the unit had.
 
 ## How it works
 
@@ -70,7 +79,7 @@ to the new length) as the start step (site `0x40095fdc`). The stock switch then 
 arithmetic assumes step 0 (it reads the old pattern's track speeds and never wraps), so after a jump DIRECT JUMP
 works each track's step out again from the new pattern (site `0x4009643a`).
 
-The SETTINGS row is a core-dn1 `ev_settings` row; the setting is core-dn1 project data (`DJMP`), and on 1.44
+The two SETTINGS rows are core-dn1 `ev_settings` rows; the setting is core-dn1 project data (`DJMP`), and on 1.44
 a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE and PUMP do.
 
 | | 1.44 |
@@ -101,7 +110,7 @@ python -m elekloader.sdk.build --stock Digitone_and_Digitone_Keys_OS1.44.syx .
 
 ## Credits and third-party code
 
-DIRECT JUMP is Robbie's own work, written with Claude (Anthropic). The SETTINGS row's four callbacks are adapted
+DIRECT JUMP is Robbie's own work, written with Claude (Anthropic). The SETTINGS rows' callbacks are adapted
 from **digihealth**'s SYSTEM INFO row (irpina/digihealth, `sysinfo.s`, GPL-2.0-or-later), as PUMP's are; the
 power-up copy request follows DIGISNAKE's. It builds against irpina's elekloader SDK and runs on core-dn1
 (GPL-2.0-or-later); none of them is included here. The firmware addresses were found by studying the Digitone's
