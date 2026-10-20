@@ -45,7 +45,8 @@ typedef long s32;
 #define SQ_ACTIVE     (DJ_SEQ + 0x214)   /* -> the pattern playing */
 #define SQ_NEXT       (DJ_SEQ + 0x218)   /* -> the pattern an armed change goes to */
 #define SQ_NEXT_ID    (DJ_SEQ + 0x224)
-#define SQ_MSTEP      (DJ_SEQ + 0x1c8)   /* u16: the master counter, the next step */
+#define SQ_MSTEP      (DJ_SEQ + 0x1c8)   /* u16: the master counter: the step playing */
+#define SQ_LEN_OVR    (DJ_SEQ + 0x2d8)   /* s16: the source's master length, > 1 overrides */
 #define SQ_START      (DJ_SEQ + 0x238)   /* the start step a switch takes */
 #define SQ_END        (DJ_SEQ + 0x23c)
 #define SQ_STEP0      (DJ_SEQ + 0x256)   /* u16[8]: each track's step after a switch */
@@ -116,7 +117,16 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
     if (R32(SQ_ARMED) || rec[20] == 1)
         return 0;                       /* already armed, or a stop (1; a pick from the keys is 0xff) */
 
-    start = R16(SQ_MSTEP);              /* the step the boundary plays */
+    /* SQ_MSTEP is advanced at each step's first tick, so here it is the step
+     * playing; the boundary plays the one after, wrapped as the stock wraps the
+     * counter (the source's length override, else the pattern's), then to the
+     * new pattern's master length. */
+    start = (u32)R16(SQ_MSTEP) + 1;
+    len = (u32)(s32)(short)R16(SQ_LEN_OVR);
+    if ((s32)len <= 1)
+        len = R16(cur + PAT_LEN);
+    if ((s32)(short)len > 1)
+        start %= len;
     len = R16(next + PAT_LEN);
     if (len > 1)
         start %= len;

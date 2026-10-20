@@ -1,7 +1,7 @@
 {
  "elemod": 2,
  "id": "directjump",
- "version": "1.1",
+ "version": "1.2",
  "title": "directjump",
  "description": "Direct Jump for the Digitone mk1: SETTINGS > DIRECT JUMP, ticked, makes a pattern picked while the sequencer plays take over on the next step instead of at the end of the pattern, carrying on from the same place in the bar (each track wrapped to the new pattern's lengths, per-track scale mode included). Unticked, the stock behaviour. Chains play on as stock, song mode is left alone, and picking the pattern already playing changes nothing. The setting is saved with the project and, on OS 1.44, survives a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
  "category": "Sequencer",
@@ -18,7 +18,7 @@
  "sections": {
   ".run": {
    "align": 4,
-   "len": 1120,
+   "len": 1180,
    "parts": [
     [
      "hex",
@@ -108,7 +108,7 @@
     ],
     [
      "hex",
-     "4ef9400de4c000000000000000000000000000000000444952454354204a554d50004aaf0004671641f90000000072011010c081108013c0000000004e7510390000000041f900000000108013c0000000004e7522394138f214518f1039000000002f032f024a00670000f44aaf0018660000ec4aaf0014670000e4b2af0014670000dc20394138f2e40c80402333ec660000cc20394138f2e80c80402333ec660000bc2039413831bc4a806c0000b020394138f2d04a80660000a4206f001c71a8001453804a806700009430394138f1c8206f0014d1fc0001610c3210740171c073c1b481640826004c4130022002206f001c3228000c2428000423c24138f224740133c14138f2d63628000a206f001433c34138f2da23c84138f218206f001c2228001023c1"
+     "4ef9400de4c000000000000000000000000000000000444952454354204a554d50004aaf0004671641f90000000072011010c081108013c0000000004e7510390000000041f900000000108013c0000000004e7522394138f214518f1039000000002f032f024a006700010e4aaf0018660001064aaf0014670000feb2af0014670000f620394138f2e40c80402333ec660000e620394138f2e80c80402333ec660000d62039413831bc4a806c0000ca20394138f2d04a80660000be206f001c740171a80014b480670000ae30394138f1c830794138f2d871c077485280b4836c0000a073c824004c4120032003206f0014d1fc0001610c3210740173c1b481640826004c4130022002206f001c3228000c2428000423c24138f224740133c14138f2d63628000a206f001433c34138f2da23c84138f218206f001c2228001023c1"
     ],
     [
      "stock",
@@ -135,7 +135,7 @@
     ],
     [
      "hex",
-     "241f4280261f508f4e7510390000"
+     "241f4280261f508f4e7506810001610c2041760132107541b6826c00ff5a73c124004c41200320036000ff4c10390000"
     ],
     [
      "stock",
@@ -294,7 +294,7 @@
   ],
   "dj_projdata": [
    ".run",
-   1104
+   1164
   ],
   "dj_site_peek": [
    ".run",
@@ -302,11 +302,11 @@
   ],
   "dj_switched": [
    ".run",
-   638
+   698
   ],
   "dj_tick": [
    ".run",
-   1002
+   1062
   ]
  },
  "exports": [
@@ -337,7 +337,7 @@
    64,
    "abs32",
    "sec:.run",
-   638
+   698
   ],
   [
    ".run",
@@ -446,84 +446,84 @@
   ],
   [
    ".run",
-   616,
+   642,
    "abs32",
    "sec:.bss",
    6
   ],
   [
    ".run",
-   640,
+   700,
    "abs32",
    "sec:.bss",
    6
   ],
   [
    ".run",
-   662,
+   722,
    "abs32",
    "sec:.bss",
    6
   ],
   [
    ".run",
-   1004,
+   1064,
    "abs32",
    "sec:.bss",
    0
   ],
   [
    ".run",
-   1012,
+   1072,
    "abs32",
    "sec:.bss",
    7
   ],
   [
    ".run",
-   1024,
+   1084,
    "abs32",
    "sec:.bss",
    7
   ],
   [
    ".run",
-   1032,
+   1092,
    "abs32",
    "sec:.bss",
    4
   ],
   [
    ".run",
-   1042,
+   1102,
    "abs32",
    "sec:.bss",
    4
-  ],
-  [
-   ".run",
-   1052,
-   "abs32",
-   "sec:.bss",
-   4
-  ],
-  [
-   ".run",
-   1060,
-   "abs32",
-   "sym:fw_project",
-   0
   ],
   [
    ".run",
    1112,
    "abs32",
    "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   1120,
+   "abs32",
+   "sym:fw_project",
    0
   ],
   [
    ".run",
-   1116,
+   1172,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   1176,
    "abs32",
    "sec:.run",
    312
@@ -621,7 +621,7 @@
  "build": {
   "sources": {
    "djsites.s": "4fd3d1733192864d859a38fa82ef5d798561b5f1eef43059275f478fa9680689",
-   "directjump.c": "d748b611f527b31a798fa8cca7c5117510b756916ebe6b13c7788db1e7398b48"
+   "directjump.c": "4aba8068745599928dee8fee70749bf896f330e085baf3a5c583a006a92f06e9"
   }
  },
  "signature": null
