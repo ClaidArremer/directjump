@@ -6,10 +6,11 @@
  * and it carries on from the same place in the bar (Elektron's "direct jump").
  * Unticked: the stock behaviour.
  *
- * SETTINGS > START ON BAR, ticked: a pick starts its pattern from the first
- * step on the next bar line, in time (as a Perkons does): pressing the key of
- * the pattern playing relaunches it, and with DIRECT JUMP unticked a pick of
- * another pattern starts it so too. The bar is the Digitone's own song
+ * SETTINGS > START ON BAR, ticked: a pick of another pattern (with DIRECT JUMP
+ * unticked) starts it from its first step on the next bar line, in time; and
+ * pressing the key of the pattern playing relaunches it from its first step on
+ * the next beat (as a Perkons does: on the bar, a 16-step pattern would be on
+ * its first step anyway, and the relaunch could not be heard). The bar is the Digitone's own song
  * position (its 16ths since PLAY, or from MIDI song position), so it never
  * loses a beat against the tempo or other gear. Both ticked: legato jumps
  * between patterns, and the playing pattern's key relaunches it on the bar.
@@ -117,7 +118,8 @@ const struct core_projdata dj_projdata = {
 #define dj_on()       (*(volatile u8 *)&dj_data[0] != 0)
 #define dj_bar()      (*(volatile u8 *)&dj_data[1] != 0)
 
-#define BAR_TICKS 96                    /* 16 sixteenths at 24 PPQN */
+#define BAR_TICKS 96                    /* 16 sixteenths at 24 PPQN: starts */
+#define BEAT_TICKS 24                   /* a quarter note: relaunches */
 #define J_JUMP    1
 #define J_START   2
 
@@ -170,15 +172,18 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
          * step is heard one of its steps after that. Here (two ticks into the
          * step, before the clock moves) the ticks played are the song
          * position less one, the boundary was a tick before: so it is heard at
-         * pos - 1 + L + Lnew. Arm on the step that puts it on a bar line (or
-         * the first one past it, off the grid); hold the stock off until then. */
+         * pos - 1 + L + Lnew. Arm on the step that puts it on a bar line (a
+         * relaunch: a beat), or the first one past it, off the grid; hold the
+         * stock off until then. A step longer than a beat (1/2X and slower)
+         * relaunches on the first beat its steps reach. */
         s32 L = TICKS(R8(SQ_MSPEED)), Ln = step_ticks(next);
+        u32 q = same ? BEAT_TICKS : BAR_TICKS;
         u32 heard;
         if (L <= 0 || Ln <= 0)
             return 0;
-        heard = R32(SQ_POS16) * 6 + R32(SQ_POSTICK) + (BAR_TICKS - 1) + (u32)L + (u32)Ln;
-        if (heard % BAR_TICKS >= (u32)L)
-            return 2;                   /* not this step: wait for the bar */
+        heard = R32(SQ_POS16) * 6 + R32(SQ_POSTICK) + (q - 1) + (u32)L + (u32)Ln;
+        if (heard % q >= (u32)L)
+            return 2;                   /* not this step: wait for the beat or bar */
     }
 
     /* SQ_MSTEP is one ahead of the step heard (the sequencer fires a step

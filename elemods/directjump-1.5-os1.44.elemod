@@ -1,9 +1,9 @@
 {
  "elemod": 2,
  "id": "directjump",
- "version": "1.4",
+ "version": "1.5",
  "title": "directjump",
- "description": "Direct Jump and Start on Bar for the Digitone mk1. SETTINGS > DIRECT JUMP, ticked: a pattern picked while the sequencer plays takes over on the next step, legato, from the same place in the bar (per-track scale mode included). SETTINGS > START ON BAR, ticked: a pick starts its pattern from the first step on the next bar line of the Digitone's song position, so it never loses a beat: pressing the playing pattern's key relaunches it, and with DIRECT JUMP unticked other patterns start so too. DIGISNAKE 1.1 relaunches its paths with a start. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. Saved with the project; on OS 1.44 the settings survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
+ "description": "Direct Jump and Start on Bar for the Digitone mk1. SETTINGS > DIRECT JUMP, ticked: a pattern picked while the sequencer plays takes over on the next step, legato, from the same place in the bar (per-track scale mode included). SETTINGS > START ON BAR, ticked: with DIRECT JUMP unticked a pick starts its pattern from the first step on the next bar line of the Digitone's song position, so it never loses a beat; and pressing the playing pattern's key relaunches it from its first step on the next beat, as a Perkons does. DIGISNAKE 1.1 relaunches its paths with a start. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. Saved with the project; on OS 1.44 the settings survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
  "category": "Sequencer",
  "author": "Robbie",
  "license": "GPL-2.0-or-later",
@@ -18,7 +18,7 @@
  "sections": {
   ".run": {
    "align": 4,
-   "len": 1752,
+   "len": 1872,
    "parts": [
     [
      "hex",
@@ -181,12 +181,12 @@
     ],
     [
      "stock",
-     "0x40004374",
+     "0x40003590",
      8
     ],
     [
      "hex",
-     "041c22394138f2144aaf00306600018e4aaf002c67000186b2af002c670a103900000000660001821039000000006700016c700220794138f2e4b1fc402333ec6600015a20794138f2e8b1fc402333ec6600014a2079413831bc4a886c00013e22794138f2d04a8966000132246f003475aa001420427401b488670001207602b680670000c430794138f1c838394138f2d875c877443f44001c780120425288b8836c00010a73ef001c26084c4130042044222f002c06810001610c24417401321273c1b481640826084c41300420447202b28067022248206f003476ff78013228000c2468000423ca4138f224242f002c33c14138f2d63228000a33c14138f2da23c24138f2182228001023c14138f2e023c94138f23823c34138f23c2f022f4000164eb94009371c588f23c44138f2d0202f001213c000000000"
+     "041c22394138f2144aaf00346600019e4aaf003067000196b2af0030670a103900000000660001921039000000006700017c700220794138f2e4b1fc402333ec6600016a20794138f2e8b1fc402333ec6600015a2079413831bc4a886c00014e22794138f2d04a8966000142246f003875aa001420427401b488670001307602b680670000c430794138f1c838394138f2d875c877443f44001c780120425288b8836c00011a73ef001c26084c4130042044222f003006810001610c24417401321273c1b481640826084c41300420447202b28067022248206f003876ff78013228000c2468000423ca4138f224242f003033c14138f2d63228000a33c14138f2da23c24138f2182228001023c14138f2e023c94138f23823c34138f23c2f022f4000164eb94009371c588f23c44138f2d0202f001213c000000000"
     ],
     [
      "stock",
@@ -195,7 +195,7 @@
     ],
     [
      "hex",
-     "00284e7518394138f24c206f002cd1fc000161111f500020247c401a9214750420722c0075af00202f48001c53824a826760206f002cd1fc0001611214104aaf001c6f147702247c401a921420723c002f4800204a886e46"
+     "002c4e7518394138f24c206f0030d1fc000161111f500020207c401a9214750477af002020702c0053832f48001c4a836770206f0030d1fc0001611216103043b2af0030670000ce74602f4200204aaf001c6f147708207c401a921420703c002f4800244a886e52"
     ],
     [
      "stock",
@@ -204,7 +204,16 @@
     ],
     [
      "hex",
-     "00284e7570016000fe8806810001610c244174013f52001c736f001cb4816c00feee73ef001c26084c41300420446000fede4aaf001c6fc078062f44002020794138f244760624084c03280024794138f24841f2285f7460d1ef001cd1ef002028084c424003b6af001c6400ff2e30794138f1c838394138f2d875c877443f44001c780120425288b8836d00fe766000ff7a10390000"
+     "002c4e7570016000fe7806810001610c244174013f52001c736f001cb4816c00fede73ef001c26084c41300420446000feceb2af003067764aaf001c6fba74067660"
+    ],
+    [
+     "stock",
+     "0x4002143a",
+     8
+    ],
+    [
+     "hex",
+     "20794138f244760624084c03280024794138f24841f228ff242f0020d1ef001cd1ef0020d1ef002428084c424003b6af001c6400ff0c30794138f1c838394138f2d875c877443f44001c780120425288b8836d00fe546000ff6878182f4400206000ff324aaf001c6f00ff44741876062f420020780620794138f24424084c03280024794138f2482f44002441f228ff242f0020d1ef001cd1ef0020d1ef002428084c424003b6af001c658a6000fe9210390000"
     ],
     [
      "stock",
@@ -387,7 +396,7 @@
   ],
   "dj_projdata": [
    ".run",
-   1736
+   1856
   ],
   "dj_starts": [
    ".bss",
@@ -399,11 +408,11 @@
   ],
   "dj_switched": [
    ".run",
-   1200
+   1320
   ],
   "dj_tick": [
    ".run",
-   1618
+   1738
   ]
  },
  "exports": [
@@ -435,7 +444,7 @@
    64,
    "abs32",
    "sec:.run",
-   1200
+   1320
   ],
   [
    ".run",
@@ -663,112 +672,112 @@
   ],
   [
    ".run",
-   1202,
+   1322,
    "abs32",
    "sec:.bss",
    10
   ],
   [
    ".run",
-   1222,
+   1342,
    "abs32",
    "sec:.bss",
    10
   ],
   [
    ".run",
-   1240,
+   1360,
    "abs32",
    "sec:.bss",
    10
-  ],
-  [
-   ".run",
-   1532,
-   "abs32",
-   "sec:.bss",
-   0
-  ],
-  [
-   ".run",
-   1540,
-   "abs32",
-   "sec:.bss",
-   0
-  ],
-  [
-   ".run",
-   1546,
-   "abs32",
-   "sec:.bss",
-   10
-  ],
-  [
-   ".run",
-   1620,
-   "abs32",
-   "sec:.bss",
-   4
-  ],
-  [
-   ".run",
-   1626,
-   "abs32",
-   "sec:.bss",
-   12
-  ],
-  [
-   ".run",
-   1646,
-   "abs32",
-   "sec:.bss",
-   12
   ],
   [
    ".run",
    1652,
    "abs32",
    "sec:.bss",
-   8
+   0
   ],
   [
    ".run",
    1660,
    "abs32",
    "sec:.bss",
-   13
-  ],
-  [
-   ".run",
-   1674,
-   "abs32",
-   "sec:.bss",
-   8
-  ],
-  [
-   ".run",
-   1684,
-   "abs32",
-   "sec:.bss",
-   8
-  ],
-  [
-   ".run",
-   1692,
-   "abs32",
-   "sym:fw_project",
    0
   ],
   [
    ".run",
-   1744,
+   1666,
+   "abs32",
+   "sec:.bss",
+   10
+  ],
+  [
+   ".run",
+   1740,
    "abs32",
    "sec:.bss",
    4
   ],
   [
    ".run",
-   1748,
+   1746,
+   "abs32",
+   "sec:.bss",
+   12
+  ],
+  [
+   ".run",
+   1766,
+   "abs32",
+   "sec:.bss",
+   12
+  ],
+  [
+   ".run",
+   1772,
+   "abs32",
+   "sec:.bss",
+   8
+  ],
+  [
+   ".run",
+   1780,
+   "abs32",
+   "sec:.bss",
+   13
+  ],
+  [
+   ".run",
+   1794,
+   "abs32",
+   "sec:.bss",
+   8
+  ],
+  [
+   ".run",
+   1804,
+   "abs32",
+   "sec:.bss",
+   8
+  ],
+  [
+   ".run",
+   1812,
+   "abs32",
+   "sym:fw_project",
+   0
+  ],
+  [
+   ".run",
+   1864,
+   "abs32",
+   "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   1868,
    "abs32",
    "sec:.run",
    540
@@ -867,7 +876,7 @@
  "build": {
   "sources": {
    "djsites.s": "1692a5b2bf1fd0befc3ada301881d1cf577a837bf165d5b9e72fd78d9df3997f",
-   "directjump.c": "7622aa8f349a079358fe0e9673847506e5e265d61abf634d3a69f6528a6bc9be"
+   "directjump.c": "fae11e5354f1058186c8e6cd7863cf7e7eee6dfc34a1e245572565dc4ef2062e"
   }
  },
  "signature": null

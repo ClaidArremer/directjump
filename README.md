@@ -4,8 +4,9 @@ Direct Jump and Start on Bar for the **Elektron Digitone mk1**, as an [elekloade
 mod (id `directjump`). Two settings decide what picking a pattern does while the sequencer plays:
 
 - **DIRECT JUMP**: the pattern takes over on the **next step**, legato, carrying on from the same place in the bar.
-- **START ON BAR**: the pattern starts from its **first step on the next bar line**, perfectly in time, as an
-  Erica Synths Perkons does. Press the key of the pattern that's playing to relaunch it on the next downbeat.
+- **START ON BAR**: the pattern starts from its **first step on the next bar line**, perfectly in time. Press the
+  key of the pattern that's playing to relaunch it from its first step on the **next beat**, as an Erica Synths
+  Perkons does.
 
 Unticked, the Digitone behaves as stock.
 
@@ -24,16 +25,16 @@ By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
 
 ## Install
 
-Add `elemods/directjump-1.4-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
+Add `elemods/directjump-1.5-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
 firmware to the Digitone. From the command line:
 
 ```
 python -m elekloader.patch --stock Digitone_and_Digitone_Keys_OS1.44.syx \
-  --mod core-4.1.1-os1.44.elemod --mod directjump-1.4-os1.44.elemod --out Digitone_directjump.syx
+  --mod core-4.1.1-os1.44.elemod --mod directjump-1.5-os1.44.elemod --out Digitone_directjump.syx
 ```
 
 It combines with DIGISNAKE, PUMP and the rest: checked linked with core-dn1 4.1.1, seq-events 0.1,
-DIGISNAKE 1.1, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 added RESTART PATTERN, which restarted on the next 16th and drifted off the beat; 1.4 replaces it with START ON BAR.
+DIGISNAKE 1.1, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 added RESTART PATTERN, which restarted on the next 16th and drifted off the beat; 1.4 replaced it with START ON BAR, whose relaunch waited for the bar line, where a 16-step pattern is at step 1 anyway; 1.5 relaunches on the beat.
 
 **Use core-dn1 4.1.1** whenever the build has two or more mod rows in SETTINGS (DIRECT JUMP and PUMP ANIMATION,
 say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of them can stall a *first* boot
@@ -48,11 +49,13 @@ say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of
 |---|---|---|---|
 | off | off | at the pattern's end (stock) | nothing (stock) |
 | **on** | off | **next step, legato** | nothing |
-| off | **on** | **step 1, next bar line** | **relaunch: step 1, next bar line** |
-| **on** | **on** | **next step, legato** | **relaunch: step 1, next bar line** |
+| off | **on** | **step 1, next bar line** | **relaunch: step 1, next beat** |
+| **on** | **on** | **next step, legato** | **relaunch: step 1, next beat** |
 
 Both on is the performance setup: jump between patterns without losing the groove, and relaunch the one
-playing on the downbeat. Press it every bar to keep replaying a pattern's first bar.
+playing on the beat. Tap it on every beat to stutter its first beat, or once a bar to keep replaying its first
+bar. A relaunch lands on a beat rather than a bar line because a 16-step pattern is on its first step at every
+bar line anyway: relaunched there, it could not be heard.
 
 - **Legato jumps**: the new pattern plays on from the step the old one would have played, wrapped to its
   length. Playing step 38 of a 64-step pattern, a jump into a 16-step one goes on from its own step 7. In
@@ -78,8 +81,8 @@ Picking a pattern gives the source a new chain and sets its index to -1 until th
 that (site `0x40095fdc`) and arms the change itself, as the stock does:
 
 - a **jump** on the very next step, with the step after the one playing as the start step;
-- a **start** with step 0 as the start, but only on the step that puts the new step 1 on a bar line of the
-  song position (16ths × 6 + ticks; a new pattern's first step is heard one of its steps after the switch).
+- a **start** with step 0 as the start, but only on the step that puts the new step 1 on a bar line (a
+  relaunch: a beat) of the song position (16ths × 6 + ticks; a new pattern's first step is heard one of its steps after the switch).
   Until then it holds the stock arm off too.
 
 The switch's per-track arithmetic assumes step 0 (it reads the old pattern's track speeds and never wraps),
@@ -105,8 +108,9 @@ a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE a
 - The logic run natively against a model of the sequencer's state: every condition that leaves a change to the
   stock, the arm's fields, the start step, and each track's step and offset in per-track mode at mixed speeds
   and lengths; and a tick-by-tick timeline of 14,112 picks at step lengths 3-48: every start's first step lands
-  on a bar line (at equal speeds exactly), within a bar of the pick.
-- On a unit (Robbie's Digitone mk1): 1.2's legato jumps stay in time. START ON BAR (1.4) not yet.
+  on a bar line (at equal speeds exactly), within a bar of the pick; and 2,016 relaunches, each on a beat, within
+  a beat of the press.
+- On a unit (Robbie's Digitone mk1): 1.2's legato jumps stay in time. START ON BAR (1.4) in time for other patterns; 1.5's relaunch on the beat not yet.
 
 ## Building
 

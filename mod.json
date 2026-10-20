@@ -1,11 +1,11 @@
 {
  "id": "directjump",
- "version": "1.4",
+ "version": "1.5",
  "title": "directjump",
  "category": "Sequencer",
  "license": "GPL-2.0-or-later",
  "author": "Robbie",
- "description": "Direct Jump and Start on Bar for the Digitone mk1. SETTINGS > DIRECT JUMP, ticked: a pattern picked while the sequencer plays takes over on the next step, legato, from the same place in the bar (per-track scale mode included). SETTINGS > START ON BAR, ticked: a pick starts its pattern from the first step on the next bar line of the Digitone's song position, so it never loses a beat: pressing the playing pattern's key relaunches it, and with DIRECT JUMP unticked other patterns start so too. DIGISNAKE 1.1 relaunches its paths with a start. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. Saved with the project; on OS 1.44 the settings survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
+ "description": "Direct Jump and Start on Bar for the Digitone mk1. SETTINGS > DIRECT JUMP, ticked: a pattern picked while the sequencer plays takes over on the next step, legato, from the same place in the bar (per-track scale mode included). SETTINGS > START ON BAR, ticked: with DIRECT JUMP unticked a pick starts its pattern from the first step on the next bar line of the Digitone's song position, so it never loses a beat; and pressing the playing pattern's key relaunches it from its first step on the next beat, as a Perkons does. DIGISNAKE 1.1 relaunches its paths with a start. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. Saved with the project; on OS 1.44 the settings survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
  "device": "digitone-mk1",
  "os": "1.44",
  "sources": [
