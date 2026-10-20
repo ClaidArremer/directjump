@@ -1,9 +1,9 @@
 {
  "elemod": 2,
  "id": "directjump",
- "version": "1.3",
+ "version": "1.4",
  "title": "directjump",
- "description": "Direct Jump for the Digitone mk1: SETTINGS > DIRECT JUMP, ticked, makes a pattern picked while the sequencer plays take over on the next step instead of at the end of the pattern, carrying on from the same place in the bar (each track wrapped to the new pattern's lengths, per-track scale mode included). SETTINGS > RESTART PATTERN, ticked, makes pressing the key of the pattern playing restart it from its first step, on the next step. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. The settings are saved with the project and, on OS 1.44, survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
+ "description": "Direct Jump and Start on Bar for the Digitone mk1. SETTINGS > DIRECT JUMP, ticked: a pattern picked while the sequencer plays takes over on the next step, legato, from the same place in the bar (per-track scale mode included). SETTINGS > START ON BAR, ticked: a pick starts its pattern from the first step on the next bar line of the Digitone's song position, so it never loses a beat: pressing the playing pattern's key relaunches it, and with DIRECT JUMP unticked other patterns start so too. DIGISNAKE 1.1 relaunches its paths with a start. Unticked, the stock behaviour. Chains play on as stock and song mode is left alone. Saved with the project; on OS 1.44 the settings survive a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
  "category": "Sequencer",
  "author": "Robbie",
  "license": "GPL-2.0-or-later",
@@ -18,7 +18,7 @@
  "sections": {
   ".run": {
    "align": 4,
-   "len": 1480,
+   "len": 1752,
    "parts": [
     [
      "hex",
@@ -159,16 +159,7 @@
     ],
     [
      "hex",
-     "4ef9400de4c000000000000000000000000000000000000000000000000000000000000000000000444952454354204a554d50005245535441525420"
-    ],
-    [
-     "stock",
-     "0x401dce0e",
-     8
-    ],
-    [
-     "hex",
-     "2f024aaf00086622103900000000241f41f90000000013d0"
+     "4ef9400de4c000000000000000000000000000000000000000000000000000000000000000000000444952454354204a554d50005354415254204f4e20424152000000002f024aaf00086622103900000000241f41f90000000013d0"
     ],
     [
      "stock",
@@ -190,21 +181,30 @@
     ],
     [
      "stock",
-     "0x40004658",
+     "0x40004374",
      8
     ],
     [
      "hex",
-     "001c20394138f2144aaf00206600011e4aaf001c67000116b0af001c670001041239000000006700010422394138f2e40c81402333ec660000f422394138f2e80c81402333ec660000e42239413831bc4a816c0000d820794138f2d04a88660000cc226f0024740173a90014b481670000bc32394138f1c832794138f2d873c177495281b4836c0000b079c9240126044c4320042204226f001cd3fc0001610c3251760175c9b682640828014c4240032203b0af001c67022041226f002478ff3029000c2229000423c14138f224262f001c33c04138f2d63429000a33c24138f2da23c34138f2182029001023c04138f2e023c84138f23823c44138f23c2f034eb94009371c588f72014cd7001c700123c04138f2d013c1000000004fef00184e751239000000006600ff004cd7001c"
+     "041c22394138f2144aaf00306600018e4aaf002c67000186b2af002c670a103900000000660001821039000000006700016c700220794138f2e4b1fc402333ec6600015a20794138f2e8b1fc402333ec6600014a2079413831bc4a886c00013e22794138f2d04a8966000132246f003475aa001420427401b488670001207602b680670000c430794138f1c838394138f2d875c877443f44001c780120425288b8836c00010a73ef001c26084c4130042044222f002c06810001610c24417401321273c1b481640826084c41300420447202b28067022248206f003476ff78013228000c2468000423ca4138f224242f002c33c14138f2d63228000a33c14138f2da23c24138f2182228001023c14138f2e023c94138f23823c34138f23c2f022f4000164eb94009371c588f23c44138f2d0202f001213c000000000"
     ],
     [
      "stock",
-     "0x40112a0c",
+     "0x400437a6",
      8
     ],
     [
      "hex",
-     "2240d3fc0001610c325176017549b6826c00ff4c79c9240126044c43200422046000ff3c10390000"
+     "00284e7518394138f24c206f002cd1fc000161111f500020247c401a9214750420722c0075af00202f48001c53824a826760206f002cd1fc0001611214104aaf001c6f147702247c401a921420723c002f4800204a886e46"
+    ],
+    [
+     "stock",
+     "0x40043c56",
+     8
+    ],
+    [
+     "hex",
+     "00284e7570016000fe8806810001610c244174013f52001c736f001cb4816c00feee73ef001c26084c41300420446000fede4aaf001c6fc078062f44002020794138f244760624084c03280024794138f24841f2285f7460d1ef001cd1ef002028084c424003b6af001c6400ff2e30794138f1c838394138f2d875c877443f44001c780120425288b8836d00fe766000ff7a10390000"
     ],
     [
      "stock",
@@ -213,7 +213,7 @@
     ],
     [
      "hex",
-     "4a00670000c0420013c00000000020794138f2144a88670000ac20080680000161112c402a7c000161121e1638394138f276287c0001610cdbc8d9c893c941e803c7247c4138f256267c401a92147f8779c47001b0876700008e101522394138f2383614710020330c004a806f0000d44c0018002c402c0077c34df618ff240e4c4028024c0268002a0292866b464a8367044c432805348574012009e1aa354100104a816f00008488825289548a41e803d07008b089669a"
+     "4a00670000d0103900000000718055804a8067000126420513c50000000020794138f2144a88670000ac20080680000161112c402a7c000161121e1638394138f276287c0001610cdbc8d9c893c941e803c7247c4138f256267c401a92147f8779c47001b0876700008e101522394138f2383614710020330c004a806f0000fa4c0018002c402c0077c34df618ff240e4c4028024c0268002a0292866b464a8367044c432805348574012009e1aa354100104a816f0000aa88825289548a41e803d07008b089669a"
     ],
     [
      "stock",
@@ -231,7 +231,7 @@
     ],
     [
      "hex",
-     "d28060b65289548a41e803d07008b08967d2101022394138f2381628fffe1428ffff710020330c004a806fd87a064c05180077832c402c007582e18b4df618ff8682240e4c4028024c0268002a0292866a00ff6860aa4682c8825289548a41e803d07008b0896600ff166000ff785289548a41e803d07a08ba896600ff0a"
+     "d28060b65289548a41e803d07008b08967d2101022394138f2381628fffe1428ffff710020330c004a806fd87a064c05180077832c402c007582e18b4df618ff8682240e4c4028024c0268002a0292866a00ff6860aa4205203900000000528023c00000000013c50000000020794138f2144a886600fed06000ff764682c8825289548a41e803d07008b0896600fef06000ff525289548a41e803d07208b2896600fee4"
     ],
     [
      "stock",
@@ -269,7 +269,7 @@
   },
   ".bss": {
    "align": 4,
-   "size": 10
+   "size": 14
   }
  },
  "symbols": {
@@ -359,15 +359,15 @@
   ],
   "dj_keep": [
    ".bss",
-   8
+   12
   ],
   "dj_jumped": [
    ".bss",
-   6
+   10
   ],
   "dj_save_wait": [
    ".bss",
-   4
+   8
   ],
   "dj_settings": [
    ".run",
@@ -383,11 +383,15 @@
   ],
   "dj_data": [
    ".bss",
-   0
+   4
   ],
   "dj_projdata": [
    ".run",
-   1464
+   1736
+  ],
+  "dj_starts": [
+   ".bss",
+   0
   ],
   "dj_site_peek": [
    ".run",
@@ -395,11 +399,11 @@
   ],
   "dj_switched": [
    ".run",
-   982
+   1200
   ],
   "dj_tick": [
    ".run",
-   1346
+   1618
   ]
  },
  "exports": [
@@ -409,6 +413,7 @@
   "dj_settings",
   "dj_site_peek",
   "dj_site_switch",
+  "dj_starts",
   "dj_switched",
   "dj_tick"
  ],
@@ -430,7 +435,7 @@
    64,
    "abs32",
    "sec:.run",
-   982
+   1200
   ],
   [
    ".run",
@@ -451,56 +456,56 @@
    170,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    184,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    224,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    248,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    348,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
    362,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
    402,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
    426,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
@@ -563,179 +568,207 @@
    550,
    "abs32",
    "sec:.bss",
-   9
+   13
   ],
   [
    ".run",
    558,
    "abs32",
    "sec:.bss",
-   8
+   12
   ],
   [
    ".run",
    564,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    570,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
    576,
    "abs32",
    "sec:.bss",
-   9
+   13
   ],
   [
    ".run",
    584,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    590,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
    604,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
    610,
    "abs32",
    "sec:.bss",
-   8
+   12
   ],
   [
    ".run",
    616,
    "abs32",
    "sec:.bss",
-   1
+   5
   ],
   [
    ".run",
    622,
    "abs32",
    "sec:.bss",
-   9
+   13
   ],
   [
    ".run",
-   668,
+   666,
+   "abs32",
+   "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   676,
+   "abs32",
+   "sec:.bss",
+   5
+  ],
+  [
+   ".run",
+   946,
+   "abs32",
+   "sec:.bss",
+   10
+  ],
+  [
+   ".run",
+   1202,
+   "abs32",
+   "sec:.bss",
+   10
+  ],
+  [
+   ".run",
+   1222,
+   "abs32",
+   "sec:.bss",
+   10
+  ],
+  [
+   ".run",
+   1240,
+   "abs32",
+   "sec:.bss",
+   10
+  ],
+  [
+   ".run",
+   1532,
    "abs32",
    "sec:.bss",
    0
   ],
   [
    ".run",
-   914,
-   "abs32",
-   "sec:.bss",
-   6
-  ],
-  [
-   ".run",
-   926,
-   "abs32",
-   "sec:.bss",
-   1
-  ],
-  [
-   ".run",
-   984,
-   "abs32",
-   "sec:.bss",
-   6
-  ],
-  [
-   ".run",
-   1006,
-   "abs32",
-   "sec:.bss",
-   6
-  ],
-  [
-   ".run",
-   1348,
+   1540,
    "abs32",
    "sec:.bss",
    0
   ],
   [
    ".run",
-   1354,
+   1546,
+   "abs32",
+   "sec:.bss",
+   10
+  ],
+  [
+   ".run",
+   1620,
+   "abs32",
+   "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   1626,
+   "abs32",
+   "sec:.bss",
+   12
+  ],
+  [
+   ".run",
+   1646,
+   "abs32",
+   "sec:.bss",
+   12
+  ],
+  [
+   ".run",
+   1652,
    "abs32",
    "sec:.bss",
    8
   ],
   [
    ".run",
-   1374,
+   1660,
+   "abs32",
+   "sec:.bss",
+   13
+  ],
+  [
+   ".run",
+   1674,
    "abs32",
    "sec:.bss",
    8
   ],
   [
    ".run",
-   1380,
+   1684,
    "abs32",
    "sec:.bss",
-   4
+   8
   ],
   [
    ".run",
-   1388,
-   "abs32",
-   "sec:.bss",
-   9
-  ],
-  [
-   ".run",
-   1402,
-   "abs32",
-   "sec:.bss",
-   4
-  ],
-  [
-   ".run",
-   1412,
-   "abs32",
-   "sec:.bss",
-   4
-  ],
-  [
-   ".run",
-   1420,
+   1692,
    "abs32",
    "sym:fw_project",
    0
   ],
   [
    ".run",
-   1472,
+   1744,
    "abs32",
    "sec:.bss",
-   0
+   4
   ],
   [
    ".run",
-   1476,
+   1748,
    "abs32",
    "sec:.run",
    540
@@ -822,7 +855,7 @@
  "resources": {
   "names": [
    "settings:DIRECT JUMP",
-   "settings:RESTART PATTERN",
+   "settings:START ON BAR",
    "projdata:DJMP"
   ],
   "core": "3.3"
@@ -833,8 +866,8 @@
  "conflicts": [],
  "build": {
   "sources": {
-   "djsites.s": "081023ad3aae112e4bd6b4ce1a6374049c97be1007cdcd16bc26bd10a7779b9e",
-   "directjump.c": "bb696eaa382dd43fca15e8e12e505476bfe005dd36fe31dd77616d20026d90ff"
+   "djsites.s": "1692a5b2bf1fd0befc3ada301881d1cf577a837bf165d5b9e72fd78d9df3997f",
+   "directjump.c": "7622aa8f349a079358fe0e9673847506e5e265d61abf634d3a69f6528a6bc9be"
   }
  },
  "signature": null

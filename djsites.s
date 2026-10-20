@@ -15,8 +15,9 @@
 | The tick interrupt, two ticks into a master step, while playing, after the
 | pattern source's next entry was peeked into 92(sp): d0 = its pattern, d3 =
 | nonzero when song mode changes the source. dj_peek arms the change itself
-| when a pattern was just picked; then the stock end-of-pattern test and its
-| arm are skipped: back to where the stock arm goes on (DJ_ARMED_RET). Else
+| when a pattern was just picked (1), or holds a start until its bar (2); then
+| the stock end-of-pattern test and its arm are skipped: back to where the
+| stock arm goes on (DJ_ARMED_RET). Else
 | back to the stock with d1 as the instruction left it. Keeps all registers
 | but d1, and the stock reads no flags from it.
         .globl  dj_site_peek
@@ -137,5 +138,5 @@ dj_settings:
 dj_row:  .long  dj_label, dj_select, dj_draw, dj_change
 dj_row2: .long  dj2_label, dj2_select, dj2_draw, dj2_change
 dj_str:  .asciz "DIRECT JUMP"
-dj_str2: .asciz "RESTART PATTERN"
+dj_str2: .asciz "START ON BAR"
         .balign 4

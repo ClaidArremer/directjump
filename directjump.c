@@ -6,9 +6,14 @@
  * and it carries on from the same place in the bar (Elektron's "direct jump").
  * Unticked: the stock behaviour.
  *
- * SETTINGS > RESTART PATTERN, ticked: pressing the key of the pattern playing
- * restarts it from its first step, on the next step (whether DIRECT JUMP is
- * ticked or not). Unticked, the stock: nothing changes.
+ * SETTINGS > START ON BAR, ticked: a pick starts its pattern from the first
+ * step on the next bar line, in time (as a Perkons does): pressing the key of
+ * the pattern playing relaunches it, and with DIRECT JUMP unticked a pick of
+ * another pattern starts it so too. The bar is the Digitone's own song
+ * position (its 16ths since PLAY, or from MIDI song position), so it never
+ * loses a beat against the tempo or other gear. Both ticked: legato jumps
+ * between patterns, and the playing pattern's key relaunches it on the bar.
+ * DIGISNAKE (1.1) relaunches its paths with a start: dj_starts.
  *
  * Both are saved with the project; on 1.44 a change also asks the OS to
  * refresh its power-up copy, so they survive a power cycle.
@@ -26,9 +31,10 @@
  * picked" is: index -1, and the source's next entry is not the pattern
  * playing. Then this mod arms the change itself (site A), on the next step,
  * with the master counter (wrapped to the new pattern's length) as the start
- * step. A pick of the pattern playing is a restart: armed the same way, with
- * step 0 as the start (RESTART PATTERN). A chain playing on and song mode are
- * left to the stock.
+ * step. A start (START ON BAR) is armed the same way with step 0 as the start,
+ * but only on the step whose successor is heard on a bar line; until then the
+ * stock arm is held off too. A chain playing on and song mode are left to the
+ * stock.
  *
  * The switch's per-track arithmetic assumes the start step 0 (it reads the old
  * pattern's track speeds and never wraps by length), so after a jump this mod
@@ -53,6 +59,9 @@ typedef long s32;
 #define SQ_NEXT       (DJ_SEQ + 0x218)   /* -> the pattern an armed change goes to */
 #define SQ_NEXT_ID    (DJ_SEQ + 0x224)
 #define SQ_MSTEP      (DJ_SEQ + 0x1c8)   /* u16: the master counter: the step playing */
+#define SQ_MSPEED     (DJ_SEQ + 0x24c)   /* s8: the step length's index (per-track mode: 2) */
+#define SQ_POS16      (DJ_SEQ + 0x244)   /* 16ths since PLAY (or MIDI song position) */
+#define SQ_POSTICK    (DJ_SEQ + 0x248)   /* ticks into that 16th, 0-5 */
 #define SQ_LEN_OVR    (DJ_SEQ + 0x2d8)   /* s16: the source's master length, > 1 overrides */
 #define SQ_START      (DJ_SEQ + 0x238)   /* the start step a switch takes */
 #define SQ_END        (DJ_SEQ + 0x23c)
@@ -80,8 +89,9 @@ typedef long s32;
 #define PC_OUT        ((void (*)(u32))DJ_PC_OUT)    /* the stock arm's call: MIDI program out */
 
 /* ---- the settings -----------------------------------------------------------
- * dj_data[0]: DIRECT JUMP, dj_data[1]: RESTART PATTERN, 1 ticked. Saved in the
- * project ("DJMP"; a project saved by 1.0-1.2 has [1] = 0). A project saved
+ * dj_data[0]: DIRECT JUMP, dj_data[1]: START ON BAR, 1 ticked. Saved in the
+ * project ("DJMP"; a project saved by 1.0-1.2 has [1] = 0, by 1.3 its RESTART
+ * PATTERN, which START ON BAR replaces). A project saved
  * without them keeps whatever the unit had, so loading an old project or making
  * a new one does not untick them. */
 u8 dj_data[4];
@@ -105,23 +115,48 @@ const struct core_projdata dj_projdata = {
 };
 
 #define dj_on()       (*(volatile u8 *)&dj_data[0] != 0)
-#define dj_restart()  (*(volatile u8 *)&dj_data[1] != 0)
+#define dj_bar()      (*(volatile u8 *)&dj_data[1] != 0)
+
+#define BAR_TICKS 96                    /* 16 sixteenths at 24 PPQN */
+#define J_JUMP    1
+#define J_START   2
+
+/* Bumped at every start's switch: DIGISNAKE 1.1 (a weak import) relaunches its
+ * paths when it moves. */
+volatile uint32_t dj_starts;
 
 /* ---- site A: the sequencer has peeked the next pattern ----------------------
  * The interrupt, two ticks into a master step, while playing. next: the
  * source's next pattern; song: nonzero when song mode is about to change the
  * source; rec: the 24-byte entry it peeked (+4 its id, +10 and +12 words, +16,
- * +20 a flag: 1 stops the sequencer at the switch, as the stock tests it). Returns 1 when it armed the change: the stock end-of-pattern
- * test is then skipped (djsites.s). */
-static volatile u8 dj_jumped;
+ * +20 a flag: 1 stops the sequencer at the switch, as the stock tests it). Returns 1 when it armed the change, 2 when it holds a
+ * start until its bar: either way the stock end-of-pattern test and arm are
+ * skipped (djsites.s). */
+static volatile u8 dj_jumped;           /* the change armed: J_JUMP or J_START */
+
+/* The ticks of a pattern's master step: per-track mode 6 (its master clock
+ * runs at 1X), else its master scale's. */
+static s32 step_ticks(u32 pat)
+{
+    if ((signed char)R8(pat + PAT_MODE) == 1)
+        return 6;
+    return TICKS(R8(pat + PAT_SPEED));
+}
 
 int32_t dj_peek(u32 next, u32 song, const u8 *rec)
 {
     u32 cur = R32(SQ_ACTIVE);
     u32 start, len;
-    int same = next == cur;             /* the playing pattern's key: a restart */
+    int same = next == cur;             /* the playing pattern's key */
+    int kind;
 
-    if (song || !next || !(same ? dj_restart() : dj_on()))
+    if (song || !next)
+        return 0;
+    if (same)
+        kind = dj_bar() ? J_START : 0;  /* a relaunch */
+    else
+        kind = dj_on() ? J_JUMP : dj_bar() ? J_START : 0;
+    if (!kind)
         return 0;
     if (R32(SQ_SOURCE) != DJ_PATTERN_SOURCE || R32(SQ_SOURCE2) != DJ_PATTERN_SOURCE)
         return 0;                       /* song mode: the stock */
@@ -130,10 +165,27 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
     if (R32(SQ_ARMED) || rec[20] == 1)
         return 0;                       /* already armed, or a stop (1; a pick from the keys is 0xff) */
 
-    /* SQ_MSTEP is advanced at each step's first tick, so here it is the step
-     * playing; the boundary plays the one after, wrapped as the stock wraps the
+    if (kind == J_START) {
+        /* The switch is at the next step boundary and the new pattern's first
+         * step is heard one of its steps after that. Here (two ticks into the
+         * step, before the clock moves) the ticks played are the song
+         * position less one, the boundary was a tick before: so it is heard at
+         * pos - 1 + L + Lnew. Arm on the step that puts it on a bar line (or
+         * the first one past it, off the grid); hold the stock off until then. */
+        s32 L = TICKS(R8(SQ_MSPEED)), Ln = step_ticks(next);
+        u32 heard;
+        if (L <= 0 || Ln <= 0)
+            return 0;
+        heard = R32(SQ_POS16) * 6 + R32(SQ_POSTICK) + (BAR_TICKS - 1) + (u32)L + (u32)Ln;
+        if (heard % BAR_TICKS >= (u32)L)
+            return 2;                   /* not this step: wait for the bar */
+    }
+
+    /* SQ_MSTEP is one ahead of the step heard (the sequencer fires a step
+     * ahead), and the new pattern's first step is heard a step after the
+     * boundary: so it starts at SQ_MSTEP + 1, wrapped as the stock wraps the
      * counter (the source's length override, else the pattern's), then to the
-     * new pattern's master length. */
+     * new pattern's master length. (1.2: checked in time on a unit.) */
     start = (u32)R16(SQ_MSTEP) + 1;
     len = (u32)(s32)(short)R16(SQ_LEN_OVR);
     if ((s32)len <= 1)
@@ -143,8 +195,8 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
     len = R16(next + PAT_LEN);
     if (len > 1)
         start %= len;
-    if (same)
-        start = 0;                      /* a restart: from its first step */
+    if (kind == J_START)
+        start = 0;                      /* from its first step, on the bar */
 
     /* the stock arm (0x40096054), with this start step */
     R32(SQ_NEXT_ID) = *(const u32 *)(rec + 4);
@@ -156,7 +208,7 @@ int32_t dj_peek(u32 next, u32 song, const u8 *rec)
     S32(SQ_END) = -1;
     PC_OUT(next);
     R32(SQ_ARMED) = 1;
-    dj_jumped = 1;
+    dj_jumped = (u8)kind;
     return 1;
 }
 
@@ -173,6 +225,8 @@ uint32_t dj_switched(uint32_t mask)
 
     if (!dj_jumped)
         return mask;
+    if (dj_jumped == J_START)
+        dj_starts++;                    /* DIGISNAKE relaunches its paths */
     dj_jumped = 0;
     pat = R32(SQ_ACTIVE);
     if (!pat)

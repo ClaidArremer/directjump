@@ -1,12 +1,13 @@
 # DIRECT JUMP
 
-Direct Jump pattern changes for the **Elektron Digitone mk1**, as an [elekloader](https://github.com/irpina/elekloader)
-mod (id `directjump`). With **SETTINGS > DIRECT JUMP** ticked, a pattern you pick while the sequencer plays takes
-over on the **next step**, not at the end of the current pattern, and carries on from the same place in the bar.
-Unticked, the Digitone behaves as stock.
+Direct Jump and Start on Bar for the **Elektron Digitone mk1**, as an [elekloader](https://github.com/irpina/elekloader)
+mod (id `directjump`). Two settings decide what picking a pattern does while the sequencer plays:
 
-With **SETTINGS > RESTART PATTERN** ticked, pressing the key of the pattern that's playing restarts it from its
-first step, on the next step: tap it to replay the first bar, again and again.
+- **DIRECT JUMP**: the pattern takes over on the **next step**, legato, carrying on from the same place in the bar.
+- **START ON BAR**: the pattern starts from its **first step on the next bar line**, perfectly in time, as an
+  Erica Synths Perkons does. Press the key of the pattern that's playing to relaunch it on the next downbeat.
+
+Unticked, the Digitone behaves as stock.
 
 By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
 
@@ -23,16 +24,16 @@ By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
 
 ## Install
 
-Add `elemods/directjump-1.3-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
+Add `elemods/directjump-1.4-os1.44.elemod` in the elekloader app together with core-dn1, build, and send the
 firmware to the Digitone. From the command line:
 
 ```
 python -m elekloader.patch --stock Digitone_and_Digitone_Keys_OS1.44.syx \
-  --mod core-4.1.1-os1.44.elemod --mod directjump-1.3-os1.44.elemod --out Digitone_directjump.syx
+  --mod core-4.1.1-os1.44.elemod --mod directjump-1.4-os1.44.elemod --out Digitone_directjump.syx
 ```
 
 It combines with DIGISNAKE, PUMP and the rest: checked linked with core-dn1 4.1.1, seq-events 0.1,
-DIGISNAKE 1.0, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 adds RESTART PATTERN.
+DIGISNAKE 1.1, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 added RESTART PATTERN, which restarted on the next 16th and drifted off the beat; 1.4 replaces it with START ON BAR.
 
 **Use core-dn1 4.1.1** whenever the build has two or more mod rows in SETTINGS (DIRECT JUMP and PUMP ANIMATION,
 say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of them can stall a *first* boot
@@ -41,28 +42,28 @@ say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of
 
 ## Using it
 
-**SETTINGS > DIRECT JUMP** and **SETTINGS > RESTART PATTERN**: YES (or RIGHT) ticks a row, YES (or LEFT) unticks it.
-They work independently.
+**SETTINGS > DIRECT JUMP** and **SETTINGS > START ON BAR**: YES (or RIGHT) ticks a row, YES (or LEFT) unticks it.
 
-DIRECT JUMP ticked, with the sequencer playing:
+| DIRECT JUMP | START ON BAR | pick another pattern | press the pattern playing |
+|---|---|---|---|
+| off | off | at the pattern's end (stock) | nothing (stock) |
+| **on** | off | **next step, legato** | nothing |
+| off | **on** | **step 1, next bar line** | **relaunch: step 1, next bar line** |
+| **on** | **on** | **next step, legato** | **relaunch: step 1, next bar line** |
 
-- **Pick a pattern** (PATTERN + a trig key, or a program change in): it starts on the next step, at the step the
-  old pattern would have played, wrapped to the new pattern's length. Playing step 38 of a 64-step pattern, a
-  jump into a 16-step one plays on from its own step 7, so the beat stays locked to the tempo.
-- **Per-track scale mode**: every track lands where it would be had the new pattern been playing all along,
-  in its own speed, wrapped to its own length.
-- **Chains** play on as stock (pattern to pattern at each end). Picking a new pattern or chain while one plays
-  jumps to its first pattern.
-- **Song mode** is left as stock.
+Both on is the performance setup: jump between patterns without losing the groove, and relaunch the one
+playing on the downbeat. Press it every bar to keep replaying a pattern's first bar.
 
-RESTART PATTERN ticked, with the sequencer playing:
-
-- **Press the key of the pattern playing**: it starts again from its first step, on the next step. Each press
-  restarts it again; with no press it loops as normal.
-- Unticked, that press changes nothing until the pattern's end (stock).
-
-Either lands at most one step and a bit after the press: the sequencer decides two ticks into each step,
-for the step after it.
+- **Legato jumps**: the new pattern plays on from the step the old one would have played, wrapped to its
+  length. Playing step 38 of a 64-step pattern, a jump into a 16-step one goes on from its own step 7. In
+  per-track scale mode every track lands where it would be had the new pattern been playing all along.
+- **The bar** is the Digitone's own song position: the 16ths since PLAY, or the MIDI song position it is sent.
+  So starts stay locked to the tempo and to other gear, whatever the patterns' lengths. A pick waits for the
+  next bar line; picking again before then changes what starts. Into a pattern with another master speed,
+  step 1 lands as close after the bar line as that speed allows (within a step).
+- **DIGISNAKE** (1.1): a start relaunches every snake from its path's start with the pattern, so the whole
+  groove restarts together. A legato jump leaves the snakes walking.
+- **Chains** play on as stock. **Song mode** is left as stock.
 
 The settings are saved with the project, and on OS 1.44 they survive a power cycle. Loading a project saved
 without them, or making a new one, keeps whatever the unit had.
@@ -74,12 +75,18 @@ looks at the next entry of its pattern source (the chain), and only on the maste
 the change; at the next step boundary it switches, starting the new pattern at step 0.
 
 Picking a pattern gives the source a new chain and sets its index to -1 until the switch. DIRECT JUMP reads
-that: on the step after a pick, it arms the change itself, as the stock does, with the master counter (wrapped
-to the new length) as the start step (site `0x40095fdc`). The stock switch then plays it. The switch's per-track
-arithmetic assumes step 0 (it reads the old pattern's track speeds and never wraps), so after a jump DIRECT JUMP
-works each track's step out again from the new pattern (site `0x4009643a`).
+that (site `0x40095fdc`) and arms the change itself, as the stock does:
 
-The two SETTINGS rows are core-dn1 `ev_settings` rows; the setting is core-dn1 project data (`DJMP`), and on 1.44
+- a **jump** on the very next step, with the step after the one playing as the start step;
+- a **start** with step 0 as the start, but only on the step that puts the new step 1 on a bar line of the
+  song position (16ths × 6 + ticks; a new pattern's first step is heard one of its steps after the switch).
+  Until then it holds the stock arm off too.
+
+The switch's per-track arithmetic assumes step 0 (it reads the old pattern's track speeds and never wraps),
+so after a jump DIRECT JUMP works each track's step out again from the new pattern (site `0x4009643a`). It
+counts each start in `dj_starts`, which DIGISNAKE 1.1 reads (a weak import) to relaunch its paths.
+
+The SETTINGS rows are core-dn1 `ev_settings` rows; the settings are core-dn1 project data (`DJMP`), and on 1.44
 a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE and PUMP do.
 
 | | 1.44 |
@@ -87,6 +94,7 @@ a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE a
 | site A, after the next pattern is peeked | `0x40095fdc`, over `mvs.w 0x4138f2d8,d1` |
 | site B, the switch's per-track steps | `0x4009643a`, over `move.w d4,0x4138f276` |
 | the stock arm it reproduces | `0x40096054` (goes on at `0x40096464`) |
+| the song position | `0x4138f244` (16ths), `0x4138f248` (ticks) |
 | the sequencer's state | `0x4138f000` + offsets in `directjump.c` |
 
 ## Checked
@@ -96,9 +104,9 @@ a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE a
 - The compiled ColdFire code read back against the stock routines it stands in for.
 - The logic run natively against a model of the sequencer's state: every condition that leaves a change to the
   stock, the arm's fields, the start step, and each track's step and offset in per-track mode at mixed speeds
-  and lengths.
-- **Not yet run on a unit or in an emulator.** First things to try on the Digitone: a jump mid-pattern in normal
-  mode, a jump into a pattern with a different length, a chain, and a per-track pattern.
+  and lengths; and a tick-by-tick timeline of 14,112 picks at step lengths 3-48: every start's first step lands
+  on a bar line (at equal speeds exactly), within a bar of the pick.
+- On a unit (Robbie's Digitone mk1): 1.2's legato jumps stay in time. START ON BAR (1.4) not yet.
 
 ## Building
 
