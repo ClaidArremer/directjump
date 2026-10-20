@@ -110,7 +110,7 @@ a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE a
   and lengths; and a tick-by-tick timeline of 14,112 picks at step lengths 3-48: every start's first step lands
   on a bar line (at equal speeds exactly), within a bar of the pick; and 2,016 relaunches, each on a beat, within
   a beat of the press.
-- On a unit (Robbie's Digitone mk1): 1.2's legato jumps stay in time. START ON BAR (1.4) in time for other patterns; 1.5's relaunch on the beat not yet.
+- On a unit (Robbie's Digitone mk1, OS 1.44, with DIGISNAKE 1.1, PUMP 2.9 and LØST LVLS): DIRECT JUMP's legato jumps, START ON BAR's starts on the bar and 1.5's relaunches on the beat all stay in time, and the snakes relaunch with the pattern.
 
 ## Building
 
