@@ -1,0 +1,628 @@
+{
+ "elemod": 2,
+ "id": "directjump",
+ "version": "1.1",
+ "title": "directjump",
+ "description": "Direct Jump for the Digitone mk1: SETTINGS > DIRECT JUMP, ticked, makes a pattern picked while the sequencer plays take over on the next step instead of at the end of the pattern, carrying on from the same place in the bar (each track wrapped to the new pattern's lengths, per-track scale mode included). Unticked, the stock behaviour. Chains play on as stock, song mode is left alone, and picking the pattern already playing changes nothing. The setting is saved with the project and, on OS 1.44, survives a power cycle. For OS 1.44; needs core-dn1 3.3 or later (4.1.1 recommended with several SETTINGS rows).",
+ "category": "Sequencer",
+ "author": "Robbie",
+ "license": "GPL-2.0-or-later",
+ "target": {
+  "device": "digitone-mk1",
+  "product": "Digitone mk1",
+  "os": "1.44",
+  "syx_sha256": "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659",
+  "section3_sha256": "fce648a97c6c5d93b961732e8f8db6b02e0820c6d344c7e2131fa05a4b3168e4",
+  "section3_len": 2736304
+ },
+ "sections": {
+  ".run": {
+   "align": 4,
+   "len": 1120,
+   "parts": [
+    [
+     "hex",
+     "73794138f2d8"
+    ],
+    [
+     "stock",
+     "0x400016a0",
+     8
+    ],
+    [
+     "hex",
+     "486f00702f032f004eb9000000004fef000c4a80"
+    ],
+    [
+     "stock",
+     "0x400016bc",
+     8
+    ],
+    [
+     "hex",
+     "67062ebc40096464"
+    ],
+    [
+     "stock",
+     "0x400004b0",
+     8
+    ],
+    [
+     "hex",
+     "03032f044eb900000000588f2800"
+    ],
+    [
+     "stock",
+     "0x400016bc",
+     8
+    ],
+    [
+     "hex",
+     "33c44138f2764e75487a00c22f2f00084eb900000000"
+    ],
+    [
+     "stock",
+     "0x4016006e",
+     8
+    ],
+    [
+     "hex",
+     "2f02486effff487a00b6"
+    ],
+    [
+     "stock",
+     "0x4003925e",
+     24
+    ],
+    [
+     "hex",
+     "206f0004205070004a390000000057c002800000000113c000000000"
+    ],
+    [
+     "stock",
+     "0x4005567c",
+     20
+    ],
+    [
+     "hex",
+     "202f000c671c5ec002800000000113c000000000"
+    ],
+    [
+     "stock",
+     "0x4005567c",
+     14
+    ],
+    [
+     "hex",
+     "4e7570004a39000000006702701cd0b9419ee988222f000c2f4100042f400008"
+    ],
+    [
+     "stock",
+     "0x40088532",
+     12
+    ],
+    [
+     "stock",
+     "0x40088540",
+     8
+    ],
+    [
+     "hex",
+     "4ef9400de4c000000000000000000000000000000000444952454354204a554d50004aaf0004671641f90000000072011010c081108013c0000000004e7510390000000041f900000000108013c0000000004e7522394138f214518f1039000000002f032f024a00670000f44aaf0018660000ec4aaf0014670000e4b2af0014670000dc20394138f2e40c80402333ec660000cc20394138f2e80c80402333ec660000bc2039413831bc4a806c0000b020394138f2d04a80660000a4206f001c71a8001453804a806700009430394138f1c8206f0014d1fc0001610c3210740171c073c1b481640826004c4130022002206f001c3228000c2428000423c24138f224740133c14138f2d63628000a206f001433c34138f2da23c84138f218206f001c2228001023c1"
+    ],
+    [
+     "stock",
+     "0x400961ac",
+     8
+    ],
+    [
+     "hex",
+     "f238"
+    ],
+    [
+     "stock",
+     "0x40095608",
+     8
+    ],
+    [
+     "hex",
+     "2f2f00144eb94009371c588f7201700123c14138f2d013c200000000"
+    ],
+    [
+     "stock",
+     "0x400580b0",
+     8
+    ],
+    [
+     "hex",
+     "241f4280261f508f4e7510390000"
+    ],
+    [
+     "stock",
+     "0x4013db4a",
+     10
+    ],
+    [
+     "hex",
+     "4a00670000c0420013c00000000020794138f2144a88670000ac20080680000161112c402a7c000161121e1638394138f276287c0001610cdbc8d9c893c941e803c7247c4138f256267c401a92147f8779c47001b0876700008e101522394138f2383614710020330c004a806f0000d44c0018002c402c0077c34df618ff240e4c4028024c0268002a0292866b464a8367044c432805348574012009e1aa354100104a816f00008488825289548a41e803d07008b089669a"
+    ],
+    [
+     "stock",
+     "0x400ffe7e",
+     12
+    ],
+    [
+     "hex",
+     "282f0030"
+    ],
+    [
+     "stock",
+     "0x400ffe7e",
+     12
+    ],
+    [
+     "hex",
+     "d28060b65289548a41e803d07008b08967d2101022394138f2381628fffe1428ffff710020330c004a806fd87a064c05180077832c402c007582e18b4df618ff8682240e4c4028024c0268002a0292866a00ff6860aa4682c8825289548a41e803d07008b0896600ff166000ff785289548a41e803d07a08ba896600ff0a"
+    ],
+    [
+     "stock",
+     "0x400ffe7e",
+     12
+    ],
+    [
+     "hex",
+     "1039000000002f0273b9000000007580b282671213c000000000702c33c000000000241f4e7530390000000067f4538033c00000000066ea2079000000004a8867e0202800204a8067d81228002466d2225042a72f00"
+    ],
+    [
+     "stock",
+     "0x400cd8b2",
+     8
+    ],
+    [
+     "stock",
+     "0x40005a5e",
+     8
+    ],
+    [
+     "hex",
+     "444a4d50"
+    ],
+    [
+     "stock",
+     "0x4018d980",
+     10
+    ],
+    [
+     "hex",
+     "0000"
+    ]
+   ]
+  },
+  ".bss": {
+   "align": 4,
+   "size": 8
+  }
+ },
+ "symbols": {
+  "CHECKBOXES": [
+   "abs",
+   1100933512
+  ],
+  "BLIT": [
+   "abs",
+   1074652352
+  ],
+  "INVALIDATE": [
+   "abs",
+   1074680734
+  ],
+  "STR_CTOR": [
+   "abs",
+   1075359688
+  ],
+  "DJ_ARMED_RET": [
+   "abs",
+   1074357348
+  ],
+  "DJ_SEQ": [
+   "abs",
+   1094250496
+  ],
+  "SQ_LEN_OVR": [
+   "abs",
+   1094251224
+  ],
+  "SQ_PENDING": [
+   "abs",
+   1094251126
+  ],
+  "dj_row": [
+   ".run",
+   284
+  ],
+  "dj_label": [
+   ".run",
+   106
+  ],
+  "dj_str": [
+   ".run",
+   300
+  ],
+  "dj_select": [
+   ".run",
+   144
+  ],
+  "dj_change": [
+   ".run",
+   186
+  ],
+  "dj_draw": [
+   ".run",
+   228
+  ],
+  "dj_loaded": [
+   ".run",
+   312
+  ],
+  "dj_keep": [
+   ".bss",
+   7
+  ],
+  "dj_jumped": [
+   ".bss",
+   6
+  ],
+  "dj_save_wait": [
+   ".bss",
+   4
+  ],
+  "dj_settings": [
+   ".run",
+   88
+  ],
+  "dj_site_switch": [
+   ".run",
+   52
+  ],
+  "dj_peek": [
+   ".run",
+   362
+  ],
+  "dj_data": [
+   ".bss",
+   0
+  ],
+  "dj_projdata": [
+   ".run",
+   1104
+  ],
+  "dj_site_peek": [
+   ".run",
+   0
+  ],
+  "dj_switched": [
+   ".run",
+   638
+  ],
+  "dj_tick": [
+   ".run",
+   1002
+  ]
+ },
+ "exports": [
+  "dj_data",
+  "dj_peek",
+  "dj_projdata",
+  "dj_settings",
+  "dj_site_peek",
+  "dj_site_switch",
+  "dj_switched",
+  "dj_tick"
+ ],
+ "imports": [
+  "core_additem",
+  "fw_project"
+ ],
+ "weak": [],
+ "relocs": [
+  [
+   ".run",
+   24,
+   "abs32",
+   "sec:.run",
+   362
+  ],
+  [
+   ".run",
+   64,
+   "abs32",
+   "sec:.run",
+   638
+  ],
+  [
+   ".run",
+   98,
+   "abs32",
+   "sym:core_additem",
+   0
+  ],
+  [
+   ".run",
+   154,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   168,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   208,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   232,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   284,
+   "abs32",
+   "sec:.run",
+   106
+  ],
+  [
+   ".run",
+   288,
+   "abs32",
+   "sec:.run",
+   144
+  ],
+  [
+   ".run",
+   292,
+   "abs32",
+   "sec:.run",
+   228
+  ],
+  [
+   ".run",
+   296,
+   "abs32",
+   "sec:.run",
+   186
+  ],
+  [
+   ".run",
+   320,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   334,
+   "abs32",
+   "sec:.bss",
+   7
+  ],
+  [
+   ".run",
+   342,
+   "abs32",
+   "sec:.bss",
+   7
+  ],
+  [
+   ".run",
+   348,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   356,
+   "abs32",
+   "sec:.bss",
+   7
+  ],
+  [
+   ".run",
+   372,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   616,
+   "abs32",
+   "sec:.bss",
+   6
+  ],
+  [
+   ".run",
+   640,
+   "abs32",
+   "sec:.bss",
+   6
+  ],
+  [
+   ".run",
+   662,
+   "abs32",
+   "sec:.bss",
+   6
+  ],
+  [
+   ".run",
+   1004,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   1012,
+   "abs32",
+   "sec:.bss",
+   7
+  ],
+  [
+   ".run",
+   1024,
+   "abs32",
+   "sec:.bss",
+   7
+  ],
+  [
+   ".run",
+   1032,
+   "abs32",
+   "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   1042,
+   "abs32",
+   "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   1052,
+   "abs32",
+   "sec:.bss",
+   4
+  ],
+  [
+   ".run",
+   1060,
+   "abs32",
+   "sym:fw_project",
+   0
+  ],
+  [
+   ".run",
+   1112,
+   "abs32",
+   "sec:.bss",
+   0
+  ],
+  [
+   ".run",
+   1116,
+   "abs32",
+   "sec:.run",
+   312
+  ]
+ ],
+ "sites": [
+  {
+   "addr": "0x40095fdc",
+   "len": 6,
+   "stock_sha256": "f693be2eab50314dd9ce287c47508148b0e2c7d3edd7e9e1cd09251538144de4",
+   "new": "4eb900000000",
+   "kind": "code",
+   "relocs": [
+    [
+     2,
+     "abs32",
+     "sym:dj_site_peek",
+     0
+    ]
+   ]
+  },
+  {
+   "addr": "0x4009643a",
+   "len": 6,
+   "stock_sha256": "79f4cfa5d322464f93cdcfb5390e4a779b5dca4a0fdf64295d2502aa5840eb12",
+   "new": "4eb900000000",
+   "kind": "code",
+   "relocs": [
+    [
+     2,
+     "abs32",
+     "sym:dj_site_switch",
+     0
+    ]
+   ]
+  }
+ ],
+ "collections": {},
+ "contribute": [
+  {
+   "to": "ev_settings",
+   "order": 60,
+   "data": "00000000",
+   "relocs": [
+    [
+     0,
+     "abs32",
+     "sym:dj_settings",
+     0
+    ]
+   ],
+   "claims": []
+  },
+  {
+   "to": "ev_tick",
+   "order": 50,
+   "data": "00000000",
+   "relocs": [
+    [
+     0,
+     "abs32",
+     "sym:dj_tick",
+     0
+    ]
+   ],
+   "claims": []
+  },
+  {
+   "to": "core_projdata",
+   "order": 60,
+   "data": "00000000",
+   "relocs": [
+    [
+     0,
+     "abs32",
+     "sym:dj_projdata",
+     0
+    ]
+   ],
+   "claims": []
+  }
+ ],
+ "copied": [],
+ "resources": {
+  "names": [
+   "settings:DIRECT JUMP",
+   "projdata:DJMP"
+  ],
+  "core": "3.3"
+ },
+ "requires": [
+  "core"
+ ],
+ "conflicts": [],
+ "build": {
+  "sources": {
+   "djsites.s": "4fd3d1733192864d859a38fa82ef5d798561b5f1eef43059275f478fa9680689",
+   "directjump.c": "d748b611f527b31a798fa8cca7c5117510b756916ebe6b13c7788db1e7398b48"
+  }
+ },
+ "signature": null
+}
