@@ -33,8 +33,9 @@ python -m elekloader.patch --stock Digitone_and_Digitone_Keys_OS1.44.syx \
   --mod core-4.1.1-os1.44.elemod --mod directjump-1.5-os1.44.elemod --out Digitone_directjump.syx
 ```
 
-It combines with DIGISNAKE, PUMP and the rest: checked linked with core-dn1 4.1.1, seq-events 0.1,
-DIGISNAKE 1.1, PUMP 2.9 and LØST LVLS 1.0. Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 added RESTART PATTERN, which restarted on the next 16th and drifted off the beat; 1.4 replaced it with START ON BAR, whose relaunch waited for the bar line, where a 16-step pattern is at step 1 anyway; 1.5 relaunches on the beat.
+It combines with [DIGISNAKE](https://github.com/ClaidArremer/digisnake),
+[PUMP](https://github.com/ClaidArremer/digitone-pump) and the rest: checked linked and played on a unit with
+core-dn1 4.1.1, seq-events 0.1, DIGISNAKE 1.3, PUMP 2.10 and LØST LVLS 1.0 (earlier with DIGISNAKE 1.1 and PUMP 2.9). Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 added RESTART PATTERN, which restarted on the next 16th and drifted off the beat; 1.4 replaced it with START ON BAR, whose relaunch waited for the bar line, where a 16-step pattern is at step 1 anyway; 1.5 relaunches on the beat.
 
 **Use core-dn1 4.1.1** whenever the build has two or more mod rows in SETTINGS (DIRECT JUMP and PUMP ANIMATION,
 say). With 4.1 and earlier, each mod row takes firmware heap at boot, and two of them can stall a *first* boot
@@ -64,7 +65,7 @@ bar line anyway: relaunched there, it could not be heard.
   So starts stay locked to the tempo and to other gear, whatever the patterns' lengths. A pick waits for the
   next bar line; picking again before then changes what starts. Into a pattern with another master speed,
   step 1 lands as close after the bar line as that speed allows (within a step).
-- **DIGISNAKE** (1.1): a start relaunches every snake from its path's start with the pattern, so the whole
+- **[DIGISNAKE](https://github.com/ClaidArremer/digisnake)** (1.1 or later): a start relaunches every snake from its path's start with the pattern, so the whole
   groove restarts together. A legato jump leaves the snakes walking.
 - **Chains** play on as stock. **Song mode** is left as stock.
 
@@ -87,7 +88,7 @@ that (site `0x40095fdc`) and arms the change itself, as the stock does:
 
 The switch's per-track arithmetic assumes step 0 (it reads the old pattern's track speeds and never wraps),
 so after a jump DIRECT JUMP works each track's step out again from the new pattern (site `0x4009643a`). It
-counts each start in `dj_starts`, which DIGISNAKE 1.1 reads (a weak import) to relaunch its paths.
+counts each start in `dj_starts`, which DIGISNAKE 1.1 and later read (a weak import) to relaunch its paths.
 
 The SETTINGS rows are core-dn1 `ev_settings` rows; the settings are core-dn1 project data (`DJMP`), and on 1.44
 a change asks the OS to refresh its power-up copy of the project, as DIGISNAKE and PUMP do.
