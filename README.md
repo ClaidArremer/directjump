@@ -1,4 +1,4 @@
-# DIRECT JUMP
+# DIRECT JUMP for Digitone
 
 Direct Jump and Start on Bar for the **Elektron Digitone mk1**, as an [elekloader](https://github.com/irpina/elekloader)
 mod (id `directjump`). Two settings decide what picking a pattern does while the sequencer plays:
@@ -10,9 +10,9 @@ mod (id `directjump`). Two settings decide what picking a pattern does while the
 
 Unticked, the Digitone behaves as stock.
 
-By Robbie (designed for a Digitone mk1, OS 1.44). GPL-2.0-or-later.
+By Robbie (designed and tested on a Digitone mk1, OS 1.44). There is no Digitakt version. GPL-2.0-or-later.
 
-> Unofficial and unsupported. Flashing modified firmware is at your own risk; the stock OS always
+> Unofficial and unsupported. Flashing modified firmware is at your own risk; the stock Digitone OS always
 > recovers the unit (hold FUNC while powering on, TRIG 4 OS UPGRADE, send the stock .syx).
 
 ## What you need
@@ -30,11 +30,11 @@ firmware to the Digitone. From the command line:
 
 ```
 python -m elekloader.patch --stock Digitone_and_Digitone_Keys_OS1.44.syx \
-  --mod core-4.1.1-os1.44.elemod --mod directjump-1.5-os1.44.elemod --out Digitone_directjump.syx
+  --mod core-4.1.1-os1.44.elemod --mod elemods/directjump-1.5-os1.44.elemod --out Digitone_directjump.syx
 ```
 
-It combines with [DIGISNAKE](https://github.com/ClaidArremer/digisnake),
-[PUMP](https://github.com/ClaidArremer/digitone-pump) and the rest: checked linked and played on a unit with
+It combines with [DIGISNAKE for Digitone](https://github.com/ClaidArremer/digitone-digisnake),
+[PUMP for Digitone](https://github.com/ClaidArremer/digitone-pump) and the rest: checked linked and played on a unit with
 core-dn1 4.1.1, seq-events 0.1, DIGISNAKE 1.3, PUMP 2.10 and LØST LVLS 1.0 (earlier with DIGISNAKE 1.1 and PUMP 2.9). Tested on a unit: 1.0 never jumped (it took a pick's entry flag, 0xFF, for a stop); fixed in 1.1. 1.1 started the new pattern a step late, so the beat slipped a 16th at each jump; fixed in 1.2. 1.3 added RESTART PATTERN, which restarted on the next 16th and drifted off the beat; 1.4 replaced it with START ON BAR, whose relaunch waited for the bar line, where a 16-step pattern is at step 1 anyway; 1.5 relaunches on the beat.
 
 **Use core-dn1 4.1.1** whenever the build has two or more mod rows in SETTINGS (DIRECT JUMP and PUMP ANIMATION,
@@ -65,7 +65,7 @@ bar line anyway: relaunched there, it could not be heard.
   So starts stay locked to the tempo and to other gear, whatever the patterns' lengths. A pick waits for the
   next bar line; picking again before then changes what starts. Into a pattern with another master speed,
   step 1 lands as close after the bar line as that speed allows (within a step).
-- **[DIGISNAKE](https://github.com/ClaidArremer/digisnake)** (1.1 or later): a start relaunches every snake from its path's start with the pattern, so the whole
+- **[DIGISNAKE](https://github.com/ClaidArremer/digitone-digisnake)** (1.1 or later): a start relaunches every snake from its path's start with the pattern, so the whole
   groove restarts together. A legato jump leaves the snakes walking.
 - **Chains** play on as stock. **Song mode** is left as stock.
 
